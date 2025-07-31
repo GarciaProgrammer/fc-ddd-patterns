@@ -1,6 +1,9 @@
 import Address from "../value-object/address";
+import EntityWithEvents from "../../@shared/entity/entity-with-events";
+import CustomerCreatedEvent from "../event/customer-created.event";
+import CustomerAddressChangedEvent from "../event/customer-address-changed.event";
 
-export default class Customer {
+export default class Customer extends EntityWithEvents {
   private _id: string;
   private _name: string = "";
   private _address!: Address;
@@ -8,9 +11,11 @@ export default class Customer {
   private _rewardPoints: number = 0;
 
   constructor(id: string, name: string) {
+    super();
     this._id = id;
     this._name = name;
     this.validate();
+    this.addEvent(new CustomerCreatedEvent({ id: this._id, name: this._name }));
   }
 
   get id(): string {
@@ -45,6 +50,11 @@ export default class Customer {
   
   changeAddress(address: Address) {
     this._address = address;
+    this.addEvent(new CustomerAddressChangedEvent({ 
+      id: this._id, 
+      name: this._name, 
+      address: address.toString() 
+    }));
   }
 
   isActive(): boolean {
