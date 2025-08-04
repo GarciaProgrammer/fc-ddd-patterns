@@ -14,8 +14,8 @@ console.log("1. Criando customer:");
 const customer = new Customer("123", "João Silva");
 
 const dispatcher = customer.getEventDispatcher();
-dispatcher.register("CustomerCreatedEvent", new EnviaConsoleLog1Handler());
-dispatcher.register("CustomerCreatedEvent", new EnviaConsoleLog2Handler());
+dispatcher.register(CustomerCreatedEvent.name, new EnviaConsoleLog1Handler());
+dispatcher.register(CustomerCreatedEvent.name, new EnviaConsoleLog2Handler());
 
 const createdEvent = new CustomerCreatedEvent({ id: "123", name: "João Silva" });
 dispatcher.notify(createdEvent);
@@ -25,7 +25,7 @@ console.log("\n2. Alterando endereço:");
 const address = new Address("Rua das Flores", 123, "12345-678", "São Paulo");
 customer.changeAddress(address);
 
-dispatcher.register("CustomerAddressChangedEvent", new EnviaConsoleLogHandler());
+dispatcher.register(CustomerAddressChangedEvent.name, new EnviaConsoleLogHandler());
 
 const addressEvent = new CustomerAddressChangedEvent({ 
   id: "123", 
